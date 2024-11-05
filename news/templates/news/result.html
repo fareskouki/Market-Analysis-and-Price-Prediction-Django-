@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Inflation Rate Analysis</title>
+    <style>
+        .chart-container {
+            text-align: center;
+            margin: 20px;
+        }
+        h2 {
+            font-size: 24px;
+            color: #333;
+        }
+        .chart-image {
+            max-width: 90%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="chart-container">
+        <h2>Inflation Rate Chart for Tunisia (1960-2023)</h2>
+        <img src="data:image/png;base64,{{ chart_base64 }}" alt="Inflation Chart" class="chart-image">
+    </div>
+</body>
+</html>

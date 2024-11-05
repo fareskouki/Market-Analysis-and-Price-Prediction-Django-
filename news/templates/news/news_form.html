@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}{{ form.instance.pk|yesno:"Edit News,Add New News" }}{% endblock %}
+
+{% block content %}
+<div class="content">
+    <h2>{{ form.instance.pk|yesno:"Edit News,Add New News" }}</h2>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="button save">Save</button>
+    </form>
+    <a href="{% url 'news_list' %}" class="button cancel">Cancel</a>
+</div>
+{% endblock %}

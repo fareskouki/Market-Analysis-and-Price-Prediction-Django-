@@ -1,0 +1,43 @@
+{% extends 'base_user.html' %}
+
+{% block title %} Votre données {% endblock %}
+{% block content %}
+<h1>Votre données</h1>
+
+<div style="display: flex; justify-content: center; gap: 20px;">
+    <!-- Premier tableau -->
+    <table style="width: 48%; border-collapse: collapse; background-color: #ffffff; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+        <thead>
+            <tr style="background-color: #65412b; color: white;">
+                <th style="padding: 12px; border-bottom: 2px solid #d6c9c4;">Produit</th>
+                <th style="padding: 12px; border-bottom: 2px solid #d6c9c4;">Prix (dinar)</th>
+                <th style="padding: 12px; border-bottom: 2px solid #d6c9c4;">Demande</th>
+                <th style="padding: 12px; border-bottom: 2px solid #d6c9c4;">Offre</th>
+                <th style="padding: 12px; border-bottom: 2px solid #d6c9c4;">category</th>
+                <th style="padding: 12px; border-bottom: 2px solid #d6c9c4;">Date d'enregistrement</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if donnees %}
+                {% for donnee in donnees %}
+                    <tr style="background-color: {% cycle 'white' '#f9f9f9' %};">
+                        <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">{{ donnee.produit }}</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">{{ donnee.prix_produit }}</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">{{ donnee.demande_produit }}</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">{{ donnee.offre_produit }}</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">{{ donnee.category.name }}</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">{{ donnee.date_enregistrement }}</td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="5" style="padding: 12px; text-align: center; color: #999;">Aucune donnée disponible</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+<a href="{% url 'analyse_prix_ia2' %}" class="button" style="display: inline-block; margin-top: 20px; padding: 10px 20px; background-color: #65412b; color: #fff; text-decoration: none; border-radius: 5px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">Prediction pour votre données</a>
+<a href="{% url 'afficher_donnees_marche' %}" class="button" style="display: inline-block; margin-top: 20px; padding: 10px 20px; background-color: #65412b; color: #fff; text-decoration: none; border-radius: 5px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">Donnée marche</a>
+
+{% endblock %}

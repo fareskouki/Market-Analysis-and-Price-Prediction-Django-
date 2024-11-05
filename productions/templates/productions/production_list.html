@@ -1,0 +1,30 @@
+{% extends "base_user.html" %}  <!-- Extend the base template -->
+{% block content %}  <!-- Begin the content block --><!DOCTYPE html>
+
+<h1>Liste des Productions</h1>
+<a href="{% url 'production_create' %}">Créer une nouvelle Production</a>
+<table>
+    <tr>
+        <th>Dénrée</th>
+        <th>Quantité</th>
+        <th>Année</th>
+        <th>Description</th>
+        <th>Actions</th>
+    </tr>
+    {% for production in productions %}
+    <tr>
+        <td>{{ production.denree }}</td>
+        <td>{{ production.quantity }}</td>
+        <td>{{ production.year }}</td>
+        <td>{{ production.description }}</td>
+        <td>
+            <a href="{% url 'production_update' production.pk %}">Modifier</a>
+            <form action="{% url 'production_delete' production.pk %}" method="POST" style="display:inline;">
+                {% csrf_token %}
+                <input type="submit" value="Supprimer">
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}  <!-- End the content block -->

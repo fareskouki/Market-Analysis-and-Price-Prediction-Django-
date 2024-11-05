@@ -1,0 +1,10 @@
+
+{% block content %}  <!-- Begin the content block --><!DOCTYPE html>
+<h1>Confirmer la suppression</h1>
+<p>Êtes-vous sûr de vouloir supprimer "{{ production }}" ?</p>
+<form method="POST">
+    {% csrf_token %}
+    <input type="submit" value="Confirmer la suppression">
+</form>
+<a href="{% url 'production_list' %}">Annuler</a>
+{% endblock %}  <!-- End the content block -->

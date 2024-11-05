@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Climate Data Overview</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #ffffff, #f0f0f0); /* Light gradient background */
+            color: #333; /* Dark text for contrast */
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+        .header {
+            background: rgba(0, 121, 107, 0.9); /* Semi-transparent teal */
+            color: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+/*fvdv*/
+/*fvdv*/
+/*fvdv*/
+/*fvdv*/
+/*fvdv*/
+
+        h1 {
+            margin: 0;
+            font-size: 2.8em;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3); /* Softer shadow for depth */
+        }
+
+        .content {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            justify-content: center; /* Center the table */
+            align-items: center;
+            position: relative;
+            z-index: 1; /* Ensure content is above background effects */
+        }
+
+        table {
+            width: 100%;
+            max-width: 1200px; /* Limit the maximum width */
+            border-collapse: collapse;
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent background */
+            border-radius: 12px;
+            overflow: hidden; /* For border radius to work */
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        table:hover {
+            transform: translateY(-5px); /* More noticeable lift effect on hover */
+        }
+
+        th,
+        td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1); /* Light border for contrast */
+            transition: background-color 0.3s, transform 0.3s; /* Smooth transitions */
+        }
+
+        th {
+            background-color: rgba(0, 77, 64, 0.9);
+            color: white;
+            font-weight: 700;
+            position: relative;
+        }
+
+        th:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: #0072ff; /* Bright blue underline effect */
+            transform: scaleX(0);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        th:hover:after {
+            transform: scaleX(1); /* Underline effect on hover */
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(240, 240, 240, 0.8); /* Light grey for even rows */
+        }
+
+        tr:hover {
+            background-color: rgba(0, 121, 107, 0.4); /* Light teal on hover */
+            transform: scale(1.02); /* Slight scale effect on hover */
+        }
+
+        .no-data {
+            text-align: center;
+            font-style: italic;
+            color: #999; /* Grey for no data message */
+            padding: 20px;
+        }
+
+        @media (max-width: 600px) {
+            table,
+            thead,
+            tbody,
+            th,
+            td,
+            tr {
+                display: block;
+            }
+
+            th {
+                display: none; /* Hide headers on small screens */
+            }
+
+            td {
+                text-align: right;
+                position: relative;
+                padding-left: 50%; /* Space for the pseudo-element */
+            }
+
+            td::before {
+                content: attr(data-label);
+                position: absolute;
+                left: 0;
+                width: 50%;
+                padding-left: 10px;
+                font-weight: bold;
+                text-align: left;
+                color: rgba(0, 121, 107, 1); /* Dark teal for labels */
+            }
+        }
+
+        .footer {
+            text-align: center;
+            padding: 15px;
+            background-color: rgba(0, 121, 107, 0.9);
+            color: white;
+            border-radius: 12px 12px 0 0; /* Rounded top corners */
+            margin-top: auto;
+            box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Responsive Typography */
+        @media (max-width: 900px) {
+            h1 {
+                font-size: 2.5em;
+            }
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>Climate Data Overview</h1>
+        <p>Explore the latest climate data and statistics</p>
+    </div>
+
+    <div class="content">
+        <table>
+            <thead>
+                <tr>
+                    <th>Produit Agricole</th>
+                    <th>Date</th>
+                    <th>Temperature (°C)</th>
+                    <th>Precipitations (mm)</th>
+                    <th>Region</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for donnee in donnees %}
+                <tr>
+                    <td data-label="Produit Agricole">{{ donnee.produit_marche.produit }}</td>
+                    <td data-label="Date">{{ donnee.date }}</td>
+                    <td data-label="Temperature">{{ donnee.temperature }}</td>
+                    <td data-label="Precipitations">{{ donnee.precipitations }}</td>
+                    <td data-label="Region">{{ donnee.region }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="no-data">No data available</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2024 Climate Data Organization | All Rights Reserved</p>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,11 @@
+
+{% block content %}  <!-- Begin the content block --><!DOCTYPE html>
+
+<h1>{% if form.instance.pk %}Modifier{% else %}Créer{% endif %} une Production</h1>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Sauvegarder">
+</form>
+<a href="{% url 'production_list' %}">Retour à la liste</a>
+{% endblock %}  <!-- End the content block -->

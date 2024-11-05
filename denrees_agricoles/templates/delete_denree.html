@@ -1,0 +1,19 @@
+{% extends "base_user.html" %}  <!-- Extend the base template -->
+
+{% block title %}Liste des Produits{% endblock %}  <!-- Set the title for the page -->
+
+{% block content %}  <!-- Begin the content block -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delete Denree</title>
+</head>
+<body>
+    <h1>Delete Denree</h1>
+    <p>Are you sure you want to delete "{{ denree.item }}"?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Confirm</button>
+    </form>
+    {% endblock %}  <!-- End the content block -->
+

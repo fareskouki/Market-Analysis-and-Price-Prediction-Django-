@@ -1,0 +1,21 @@
+{% extends "base_user.html" %}  <!-- Extend the base template -->
+{% block content %}  <!-- Begin the content block -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Prévisions des Prix</title>
+</head>
+<body>
+    <h1>Prévisions des Prix du Sugar</h1>
+    <img src="{% static 'forecast.png' %}" alt="Prévisions des Prix">
+    <h2>Prévisions pour les 5 prochaines années :</h2>
+    <ul>
+        {% for year, prediction in future_years|zip:predictions %}
+            <li>{{ year }} : {{ prediction|floatformat:2 }} €</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
+{% endblock %}  <!-- End the content block -->

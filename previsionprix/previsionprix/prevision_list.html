@@ -1,0 +1,11 @@
+<h1>Liste des Prévisions de Prix</h1>
+<a href="{% url 'prevision_create' %}">Ajouter une nouvelle prévision</a>
+<ul>
+  {% for prevision in previsions %}
+    <li>
+      <a href="{% url 'prevision_detail' prevision.id %}">{{ prevision.date_prevision }} - {{ prevision.prix_prevu }} €</a>
+      <a href="{% url 'prevision_update' prevision.id %}">Modifier</a>
+      <a href="{% url 'prevision_delete' prevision.id %}">Supprimer</a>
+    </li>
+  {% endfor %}
+</ul>

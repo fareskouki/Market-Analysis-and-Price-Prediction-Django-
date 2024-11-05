@@ -1,0 +1,18 @@
+{% extends "base_user.html" %}  <!-- Extend the base template -->
+
+{% block title %}Liste des Produits{% endblock %}  <!-- Set the title for the page -->
+
+{% block content %}  <!-- Begin the content block -->
+    <h1>Liste des degreess Agricoles</h1>
+    <ul>
+        {% for degrees in degreess %}
+            <li>
+                <strong>{{ degrees.item }}</strong> - Type : {{ degrees.year }}<br>
+                Unité de Mesure : {{ degrees.area }}<br>
+                Prix : {{ degrees.value }} €
+            </li>
+        {% empty %}
+            <li>Aucun degrees disponible pour le moment.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}  <!-- End the content block -->

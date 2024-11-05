@@ -1,0 +1,93 @@
+{% extends 'base_user.html' %}
+
+{% block title %}Prediction des prix{% endblock %}
+
+{% block content %}
+<h1>Prédiction des prix </h1>
+
+{% if resultats %}
+    <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+        <thead>
+            <tr>
+                <th style="background-color: #65412b; color: #fff; padding: 10px; border: 1px solid #d6c9c4;">Produit</th>
+                <th style="background-color: #65412b; color: #fff; padding: 10px; border: 1px solid #d6c9c4;">Prix prédit (dinar)</th>
+                <th style="background-color: #65412b; color: #fff; padding: 10px; border: 1px solid #d6c9c4;">Offre</th>
+                <th style="background-color: #65412b; color: #fff; padding: 10px; border: 1px solid #d6c9c4;">Demande</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for resultat in resultats %}
+            <tr>
+                <td style="padding: 10px; border: 1px solid #d6c9c4;">{{ resultat.produit }}</td>
+                <td style="padding: 10px; border: 1px solid #d6c9c4;">{{ resultat.prix_predit|default:"N/A" }}</td>
+                <td style="padding: 10px; border: 1px solid #d6c9c4;">{{ resultat.nouvelle_offre|default:"N/A" }}</td>
+                <td style="padding: 10px; border: 1px solid #d6c9c4;">{{ resultat.nouvelle_demande|default:"N/A" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Canvas for the bar chart -->
+    <h2>Prix Prédits par Produit (Bar Chart)</h2>
+    <canvas id="prixBarChart" width="400" height="400"></canvas>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Prepare data for the bar chart
+        const produits = [
+            {% for resultat in resultats %}
+                "{{ resultat.produit }}"{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        ];
+
+        const prixPredits = [
+            {% for resultat in resultats %}
+                {{ resultat.prix_predit|default:"0" }}{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        ];
+        
+        // Create the bar chart
+        const ctxBar = document.getElementById('prixBarChart').getContext('2d');
+        const prixBarChart = new Chart(ctxBar, {
+            type: 'bar',
+            data: {
+                labels: produits,
+                datasets: [{
+                    label: 'Prix Prédits (€)',
+                    data: prixPredits,
+                    backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Prix (€)'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Prix Prédits par Produit (Bar Chart)'
+                    }
+                }
+            }
+        });
+    </script>
+
+{% else %}
+    <p>{{ message }}</p>
+{% endif %}
+<br>
+<a href="{% url 'afficher_donnees_marche' %}" style="background-color: #65412b; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px; border: none;">Retour aux données du marché</a>
+{% endblock %}

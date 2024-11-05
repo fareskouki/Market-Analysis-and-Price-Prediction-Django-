@@ -1,0 +1,22 @@
+{% extends "base_user.html" %}  <!-- Extend the base template -->
+
+{% block title %}Liste des Produits{% endblock %}  <!-- Set the title for the page -->
+
+{% block content %}  <!-- Begin the content block -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Import CSV</title>
+</head>
+<body>
+    <h1>Import CSV</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="file" required>
+        <button type="submit">Importer</button>
+    </form>
+    <a href="{% url 'list_denrees' %}">Retourner à la liste</a>
+</body>
+</html>
+{% endblock %}  <!-- End the content block -->

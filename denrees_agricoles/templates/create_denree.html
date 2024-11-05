@@ -1,0 +1,20 @@
+{% extends "base_user.html" %}  <!-- Extend the base template -->
+
+{% block title %}Liste des Produits{% endblock %}  <!-- Set the title for the page -->
+
+{% block content %}  <!-- Begin the content block --><!DOCTYPE html>
+<html>
+<head>
+    <title>Create Denree</title>
+</head>
+<body>
+    <h1>Create Denree</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save</button>
+    </form>
+    <a href="{% url 'list_denrees' %}">Back to list</a>
+</body>
+</html>
+{% endblock %}  <!-- End the content block -->

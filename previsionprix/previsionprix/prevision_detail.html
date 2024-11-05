@@ -1,0 +1,6 @@
+<h1>Détails de la Prévision</h1>
+<p>Date de Prévision : {{ prevision.date_prevision }}</p>
+<p>Prix Prévu : {{ prevision.prix_prevu }} €</p>
+<p>Confiance : {{ prevision.confiance }} %</p>
+<p>Méthode : {{ prevision.methode }}</p>
+<a href="{% url 'prevision_list' %}">Retour à la liste</a>

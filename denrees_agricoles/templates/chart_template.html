@@ -1,0 +1,76 @@
+{% extends "base_user.html" %}  <!-- Extend the base template -->
+
+{% block title %}Liste des Produits{% endblock %}  <!-- Set the title for the page -->
+
+{% block content %}  <!-- Begin the content block -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Graphique des Données CSV</title>
+    <!-- Inclure Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Importer un fichier CSV et Afficher le Graphique</h1>
+
+    <!-- Formulaire pour importer le fichier CSV -->
+    <form id="csvForm" enctype="multipart/form-data" method="post">
+        {% csrf_token %}
+        <label for="csv_file">Sélectionner un fichier CSV :</label>
+        <input type="file" id="csv_file" name="csv_file" accept=".csv" required>
+        <button type="submit">Importer</button>
+    </form>
+    
+    <!-- Zone du graphique -->
+    <canvas id="myChart" width="400" height="200"></canvas>
+    <script>
+        document.getElementById('csvForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            
+            const formData = new FormData();
+            formData.append('csv_file', document.getElementById('csv_file').files[0]);
+    
+            // Récupérer le token CSRF
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    
+            const response = await fetch("{% url 'import_csv_chart' %}", {
+                method: "POST",
+                headers: {
+                    'X-CSRFToken': csrfToken // Ajouter le token CSRF dans les en-têtes
+                },
+                body: formData
+            });
+            const data = await response.json();
+    
+            if (data.error) {
+                alert("Erreur : " + data.error);
+                return;
+            }
+    
+            const ctx = document.getElementById('myChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.years,
+                    datasets: [{
+                        label: 'Valeurs par Année',
+                        data: data.values,
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: { beginAtZero: true },
+                        x: { title: { display: true, text: 'Années' } }
+                    }
+                }
+            });
+        });
+    </script>
+    
+</body>
+</html>
+{% endblock %}  <!-- End the content block -->

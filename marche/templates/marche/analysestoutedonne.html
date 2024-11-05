@@ -1,0 +1,74 @@
+{% extends 'base_user.html' %}
+
+{% block title %}Analyse IA{% endblock %}
+
+{% block content %}
+<h1>Analyse des prix de votre produits</h1>
+
+{% if resultats %}
+    <div style="display: flex; justify-content: center; gap: 20px;">
+        <table style="width: 100%; border-collapse: collapse; background-color: #ffffff; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+            <thead>
+                <tr style="background-color: #65412b; color: white;">
+                    <th style="padding: 12px; border-bottom: 2px solid #d6c9c4;">Produit</th>
+                    <th style="padding: 12px; border-bottom: 2px solid #d6c9c4;">Prix prédit (dinar)</th>
+                    <th style="padding: 12px; border-bottom: 2px solid #d6c9c4;">Offre</th>
+                    <th style="padding: 12px; border-bottom: 2px solid #d6c9c4;">Demande</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for resultat in resultats %}
+                <tr style="background-color: {% cycle 'white' '#f9f9f9' %};">
+                    <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">{{ resultat.produit }}</td>
+                    <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">{{ resultat.prix_predit }}</td>
+                    <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">{{ resultat.nouvelle_offre }}</td>
+                    <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">{{ resultat.nouvelle_demande }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Charts for each product -->
+    
+
+    <script>
+        {% for resultat in resultats %}
+        const ctx{{ forloop.counter }} = document.getElementById('chart-{{ forloop.counter }}').getContext('2d');
+        const chart{{ forloop.counter }} = new Chart(ctx{{ forloop.counter }}, {
+            type: 'bar',
+            data: {
+                labels: ['Prix prédit (€)', 'Offre', 'Demande'],
+                datasets: [{
+                    label: 'Valeurs',
+                    data: [{{ resultat.prix_predit }}, {{ resultat.nouvelle_offre }}, {{ resultat.nouvelle_demande }}],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)', // Color for predicted price
+                        'rgba(54, 162, 235, 0.2)', // Color for offer
+                        'rgba(75, 192, 192, 0.2)'  // Color for demand
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(75, 192, 192, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+        {% endfor %}
+    </script>
+
+{% else %}
+    <p>{{ message }}</p>
+{% endif %}
+
+<a href="{% url 'afficher_toutes_donnees_marche' %}" class="button" style="display: inline-block; margin-top: 20px; padding: 10px 20px; background-color: #65412b; color: #fff; text-decoration: none; border-radius: 5px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">Retour a votre données </a>
+{% endblock %}

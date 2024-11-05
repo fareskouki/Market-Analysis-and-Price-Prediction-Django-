@@ -1,0 +1,7 @@
+<h1>Supprimer la Prévision</h1>
+<p>Êtes-vous sûr de vouloir supprimer cette prévision ?</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Oui, supprimer</button>
+</form>
+<a href="{% url 'prevision_list' %}">Annuler</a>

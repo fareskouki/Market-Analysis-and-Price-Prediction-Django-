@@ -1,0 +1,88 @@
+<!-- news/templates/news/result_with_forecast.html -->
+
+{% extends "news/base.html" %}
+
+{% block title %}Forecasted Price Based on News Sentiment{% endblock %}
+
+{% block content %}
+    <h2>Forecasted Price Based on News Sentiment</h2>
+    <p><strong>Real Price:</strong> ${{ real_price }}</p>
+    <p><strong>Provisioned Price:</strong> ${{ provisioned_price|floatformat:2 }}</p>
+    <p><strong>Sentiment:</strong> {{ sentiment_label|title }}</p>
+    <p><strong>Sentiment Scores:</strong> Positive: {{ sentiment_score.positive|floatformat:2 }}, Neutral: {{ sentiment_score.neutral|floatformat:2 }}, Negative: {{ sentiment_score.negative|floatformat:2 }}</p>
+    
+    <!-- Plotly Chart -->
+    <div id="forecast-chart" style="width:100%; height:600px;"></div>
+    
+    <!-- Render Plotly Chart -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script>
+        var inflationData = {{ inflation_data|safe }};
+        var oilData = {{ oil_data|safe }};
+        var provisionedPriceData = {{ provisioned_price_data|safe }};
+        
+        var layout = {
+            title: 'Inflation Rate vs Oil Prices vs Provisioned Price',
+            xaxis: { 
+                title: 'Year',
+                range: [Math.min(...inflationData.x, ...oilData.x, ...provisionedPriceData.x) - 1, 
+                        Math.max(...inflationData.x, ...oilData.x, ...provisionedPriceData.x) + 1]
+            },
+            yaxis: { title: 'Rate / Price (USD/L)' },
+            updatemenus: [
+                {
+                    type: 'buttons',
+                    direction: 'left',
+                    buttons: [
+                       
+                        {
+                            args: ['visible', [true, true, true]],
+                            label: 'Show All',
+                            method: 'restyle'
+                        },
+                        {
+                            args: ['visible', [true, false, true]],
+                            label: 'Inflation & Provisioned Price',
+                            method: 'restyle'
+                        },
+                        {
+                            args: ['visible', [false, true, true]],
+                            label: 'Oil Prices & Provisioned Price',
+                            method: 'restyle'
+                        },
+                        {
+                            args: ['visible', [true, true, false]],
+                            label: 'Inflation & Oil Prices',
+                            method: 'restyle'
+                        }
+                    ],
+                    pad: {r: 10, t: 10},
+                    showactive: true,
+                    x: 0.1,
+                    xanchor: 'left',
+                    y: 1.15,
+                    yanchor: 'top'
+                }
+            ],
+            margin: { t: 150 },
+            hovermode: 'closest',
+            annotations: [
+                {
+                    x: {{ next_year }},
+                    y: {{ provisioned_price }},
+                    xref: 'x',
+                    yref: 'y',
+                    text: 'Forecasted Price',
+                    showarrow: true,
+                    arrowhead: 7,
+                    ax: 0,
+                    ay: -40
+                }
+            ]
+        };
+        
+        var data = [inflationData, oilData, provisionedPriceData];
+        
+        Plotly.newPlot('forecast-chart', data, layout);
+    </script>
+{% endblock %}

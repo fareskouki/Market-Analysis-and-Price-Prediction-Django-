@@ -1,0 +1,38 @@
+{% extends "base_user.html" %}  <!-- Extend the base template -->
+
+{% block title %}Liste des Denrees{% endblock %}  <!-- Set the title for the page -->
+
+{% block content %}  <!-- Begin the content block -->
+<!-- denrees_agricoles/templates/list_denrees.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>List of Denrees</title>
+</head>
+<body>
+    <h1>List of Denrees</h1>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Item</th>
+            <th>Year</th>
+            <th>Value</th>
+            <th>Actions</th>
+        </tr>
+        {% for denree in denrees %}
+        <tr>
+            <td>{{ denree.id }}</td>
+            <td>{{ denree.item }}</td>
+            <td>{{ denree.year }}</td>
+            <td>{{ denree.value }}</td>
+            <td>
+                <a href="{% url 'update_denree' denree.id %}">Edit</a>
+                <a href="{% url 'delete_denree' denree.id %}">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <a href="{% url 'create_denree' %}">Create new Denree</a>
+</body>
+</html>
+{% endblock %}  <!-- End the content block -->
